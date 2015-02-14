@@ -1,0 +1,35 @@
+<div id="slider" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+  {% for items in slideritems %}
+    {% if items.show %}
+    <li data-target="#slider" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></li>
+    {% endif %}
+  {% endfor %}
+  </ol>
+  <div class="carousel-inner">
+  {% for items in slideritems %}
+    {% if items.show %}
+      <div class="item {% if forloop.first %}active{% endif %}">
+        <img src="/{{items.picture}}" alt="{{items.alt}}">
+        {% if items.show_html %}
+        <div class="container">
+          <div class="carousel-caption">
+          {% autoescape off %}{{items.html}}{% endautoescape %}
+          </div>
+        </div>        
+        {% endif %}
+      </div>      
+    {% endif %}
+
+
+  {% endfor %}
+
+
+  </div>
+  <a class="left carousel-control" href="#slider" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left"></span>
+  </a>
+  <a class="right carousel-control" href="#slider" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right"></span>
+  </a>
+</div>

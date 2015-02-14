@@ -1,0 +1,150 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block css  %}
+<link rel="stylesheet" href="{% static 'stylesheets/blog.css' %}" type="text/css">
+{% endblock %}
+
+{% block title %}
+	Նաբու | Բլոգ
+{% endblock title %}
+
+
+{% block js %}
+	<script type="text/javascript">
+		var article_update_url = "{% url 'blog:article_update' %}";
+		var comment_update_url = "{% url 'blog:comment_update' %}";
+		var article_remove_url = "{% url 'blog:article_remove' %}";
+		var comment_remove_url = "{% url 'blog:comment_remove' %}";
+	</script>
+
+	<script src="{% static 'scripts/blog.js' %}"></script>
+{% endblock js %}
+
+
+
+{% block slider %}{% endblock slider %}
+
+{% block fullcontent %}
+<div id='add_article_section'>
+	{% if article_success %}
+		<div class="alert alert-success">
+			<a href="#" class="close" data-dismiss="alert">&times;</a>
+			<strong>
+				{{article_success}}
+			</strong>
+		</div>		
+	{% endif %}
+
+	{% if article_error %}
+		<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert">&times;</a>
+			<strong>
+				{{article_error}}
+			</strong>
+		</div>		
+	{% endif %}
+
+	<form action="" method="post" role="form" class="form-signin">
+	<h4 class="form-signin-heading">Ավելացնել թեմա</h4>
+	{% csrf_token %}
+		<textarea class="" id="add_aticle" name="add_article" required=""  placeholder="Ավելացնել թեմա"></textarea>
+
+		<button class="btn btn-success btn-block pull-right" id="add_aticle_btn" type="submit">Ավելացնել</button>
+	</form>
+</div>
+
+<div id="artcile_section">
+	
+	{% for article in articles %}
+	
+	<table class="table article">
+		<tbody>
+			<tr>
+				<td width="15%">
+					<div class="author_name">Հեղինակ՝ {{article.author}}</div>
+					<div class="author_avatar">
+
+						<!-- <img alt="sdfsdf" src="/static/upload/slider/main-qimg-3f650060084be80e30ea113161857e75.jpeg"  class="img-rounded" width="50" height="50"> -->
+
+					</div>
+					<div class='created'>{{article.created|date:'Y-m-d H:i'}}</div>
+					
+				</td>
+				<td width="85%">
+					<div class="article_body">
+						<div class="article_content">{{article.body}}</div>
+						<div class="remove_article" article='{{article.id}}'>x</div>
+					</div>
+					{% if article.comment_set.count %}
+
+						{% for comment in article.comment_set.all|slice:":5" %}
+							
+							<table class="table comment">
+								<td width="15%">
+									<div class="author_name">{{comment.author}}</div>
+									<!-- <div class="author_avatar">
+										<img alt="sdfsdf" src="/static/upload/slider/main-qimg-3f650060084be80e30ea113161857e75.jpeg" width="40" height="40" class="img-rounded">
+									</div> -->
+									<div class='created'>{{comment.created|date:'Y-m-d H:i'}}</div>
+								</td>
+								<td width="85%">
+									<div class="comment_body">
+										<div class='comment_content'>{{comment.body}}</div>
+										<div class="remove_comment" comment="{{comment.id}}">x</div>
+									</div>
+								</td>
+							</table>
+
+							{% if forloop.last %}
+								<div class="more_comments">
+									<div>
+										<button class="btn btn-info" article="{{article.id}}" count="{{forloop.counter}}">Ավելին․․․</button>		
+									</div>
+								</div>
+							{% endif %}
+						{% endfor %}
+
+
+					{% endif %}
+					{% if comment_error %}
+						<div class="alert alert-danger">
+							<a href="#" class="close" data-dismiss="alert">&times;</a>
+							<strong>
+								{{comment_error}}
+							</strong>
+						</div>		
+					{% endif %}
+					<form action="" method="post" role="form" class="form-signin">
+						<h5 class="form-signin-heading">Ավելացնել մեկնաբանություն</h5>
+						{% csrf_token %}
+						<input type="hidden" name="article_id" value="{{article.id}}">
+						<textarea class="add_comment" name="add_comment" required=""  placeholder="Ավելացնել մեկնաբանություն"></textarea>
+
+						<button class="btn btn-primary btn-block pull-right add_comment_btn" type="submit">Ավելացնել</button>
+					</form>				
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+
+
+
+
+
+
+
+
+{% endfor %}
+
+
+</div>
+
+	<div class="more_articles">
+		<div>
+			<button class="btn btn-mini">Ավելին․․․</button>		
+		</div>
+	</div>
+{% endblock fullcontent %} 

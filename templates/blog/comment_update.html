@@ -1,0 +1,23 @@
+
+{% for comment in comments %}
+	
+	<table class="table comment">
+		<td width="15%">
+			<div class="author_name">{{comment.author}}</div>
+			<!-- <div class="author_avatar">
+				<img alt="sdfsdf" src="/static/upload/slider/main-qimg-3f650060084be80e30ea113161857e75.jpeg" width="40" height="40" class="img-rounded">
+			</div> -->
+			<div class='created'>{{comment.created|date:'Y-m-d H:i'}}</div>
+		</td>
+		<td width="85%">
+			<div class="comment_body">
+				<div class='comment_content'>{{comment.body}}</div>
+				<div class="remove_comment" comment="{{comment.id}}">x</div>
+			</div>
+		</td>
+	</table>
+
+{% endfor %}
+
+
+

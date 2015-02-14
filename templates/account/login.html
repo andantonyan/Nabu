@@ -1,0 +1,60 @@
+{% extends "layout.html" %}(lowercase)
+{% load staticfiles %}
+
+{% block css %}
+	<link rel="stylesheet" href="{% static 'stylesheets/signin.css' %}" type="text/css">
+{% endblock css %}
+
+{% block title %}
+	Մուտք Գործել
+{% endblock title %}
+
+{# {% block menu %}{% include "utils/menu.html" with status="login" %}{% endblock menu %} #}
+
+{% block slider %}{% endblock slider %}
+
+{% block fullcontent %}
+
+<div class="col-lg-12">
+
+
+	{% if form.errors %}
+
+		<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert">&times;</a>
+			<strong>
+				{% for field in form %}
+					{{field.errors}}
+				{% endfor %}
+			</strong>
+		</div>	
+
+	{% endif %}
+	
+	<form action="" method="post" role="form" class="form-signin">
+	<h2 class="form-signin-heading">Բարի Գալուստ</h2>
+	{% csrf_token %}
+
+		{% for field in form %}
+			{{ field.label_tag }}
+			{{ field }}
+
+		{% endfor %}
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Մուտք</button>
+	</form>
+
+</div>
+
+
+
+
+<!-- 	<form role="form" class="form-signin">
+		<h2 class="form-signin-heading">Please sign in</h2>
+		<input type="email" autofocus="" required="" placeholder="Email address" class="form-control">
+		<input type="password" required="" placeholder="Password" class="form-control">
+		<label class="checkbox">
+			<input type="checkbox" value="remember-me">Remember me</label>
+		<button type="submit" class="btn btn-lg btn-primary btn-block">Sign in</button>
+	</form> -->
+
+{% endblock fullcontent %}

@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}
+	{{title}}
+{% endblock title %}
+
+{% block slider %}
+    {% if slider %}{{ block.super }}{% else %} {% endif %}
+{% endblock slider %}
+
+{% block content %}
+	<div id='content'>
+	{% autoescape off %}{{ html }}{% endautoescape %}
+	</div>
+{% endblock content %}

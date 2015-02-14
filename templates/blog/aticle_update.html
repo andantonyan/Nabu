@@ -1,0 +1,71 @@
+{% for article in articles %}
+	
+	<table class="table article">
+		<tbody>
+			<tr>
+				<td width="15%">
+					<div class="author_name">Հեղինակ՝ {{article.author}}</div>
+					<div class="author_avatar">
+
+						<!-- <img alt="sdfsdf" src="/static/upload/slider/main-qimg-3f650060084be80e30ea113161857e75.jpeg"  class="img-rounded" width="50" height="50"> -->
+
+					</div>
+					<div class='created'>{{article.created|date:'Y-m-d H:i'}}</div>
+					
+				</td>
+				<td width="85%">
+					<div class="article_body">
+						<div class="article_content">{{article.body}}</div>
+						<div class="remove_article" article='{{article.id}}'>x</div>
+					</div>
+					{% if article.comment_set.count %}
+
+						{% for comment in article.comment_set.all|slice:":5" %}
+							
+							<table class="table comment">
+								<td width="15%">
+									<div class="author_name">{{comment.author}}</div>
+									<!-- <div class="author_avatar">
+										<img alt="sdfsdf" src="/static/upload/slider/main-qimg-3f650060084be80e30ea113161857e75.jpeg" width="40" height="40" class="img-rounded">
+									</div> -->
+									<div class='created'>{{comment.created|date:'Y-m-d H:i'}}</div>
+								</td>
+								<td width="85%"><div class="comment_body">{{comment.body}}</div></td>
+							</table>
+
+							{% if forloop.last %}
+								<div class="more_comments">
+									<div>
+										<button class="btn btn-info" article="{{article.id}}" count="{{forloop.counter}}">Ավելին․․․</button>		
+									</div>
+								</div>
+							{% endif %}
+						{% endfor %}
+
+
+					{% endif %}
+					{% if comment_error %}
+						<div class="alert alert-danger">
+							<a href="#" class="close" data-dismiss="alert">&times;</a>
+							<strong>
+								{{comment_error}}
+							</strong>
+						</div>		
+					{% endif %}
+					<form action="" method="post" role="form" class="form-signin">
+						<h5 class="form-signin-heading">Ավելացնել մեկնաբանություն</h5>
+						{% csrf_token %}
+						<input type="hidden" name="article_id" value="{{article.id}}">
+						<textarea class="add_comment" name="add_comment" required=""  placeholder="Ավելացնել մեկնաբանություն"></textarea>
+
+						<button class="btn btn-primary btn-block pull-right add_comment_btn" type="submit">Ավելացնել</button>
+					</form>				
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+{% endfor %}
+
+

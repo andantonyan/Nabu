@@ -1,0 +1,76 @@
+<div class="navbar-wrapper">
+  <!-- <div class="container"> -->
+
+    <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'home' %}">Նաբու</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+
+          {% for menu in menuitems %}
+            {% if menu.show %}
+              {% if menu.submenu_set.count %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{menu}} <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/{{menu.slug}}/">{{menu}}</a>
+                        </li>
+                    {% for submenu in menu.submenu_set.all %}
+                      {% if submenu.show %}
+                        <li>
+                            <a href="/{{menu.slug}}/{{submenu.slug}}/" >{{submenu}}</a>
+                        </li>                      
+                      {% endif %}
+ 
+                    {% endfor %}
+                    </ul>
+                </li>
+              {% else %}
+                <li><a href="/{{menu.slug}}/" title="">{{menu}}</a></li>
+              {% endif %}                  
+            {% endif %}
+            
+          {% endfor %}
+
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% if status = 'logout' %}
+              <li><a href="{% url 'blog:index' %}">Բլոգ</a></li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Իմ հաշիվը <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li>
+                          <a href="{% url 'settings' %}">Կարգավորումներ</a>
+                      </li>                
+                      <li>
+                          <a href="{% url 'logout' %}">Դուրս Գալ</a>
+                      </li>
+
+                  </ul>
+              </li>
+
+             
+            {% else %}
+
+              <li><a href="{% url 'registration' %}">Գրանցվել</a></li>          
+              <li><a href="{% url 'login' %}">Մուտք</a></li>              
+              
+            {% endif %}
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+</div>
